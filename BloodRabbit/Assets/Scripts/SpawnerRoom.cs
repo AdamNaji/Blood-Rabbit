@@ -47,20 +47,19 @@ public class SpawnerRoom : MonoBehaviour
 
             spawned = true;
         }
-       
+        
     }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("SpawnPoint"))
         {
             if (other.GetComponent<SpawnerRoom>().spawned == false && spawned == false)
-            {  
+            {
                 Instantiate(templates.closedRoom, transform.position, Quaternion.identity);
-                Destroy(gameObject);
             }
 
-            spawned = true;
+            spawned = true; 
         }
+        
     }
 }

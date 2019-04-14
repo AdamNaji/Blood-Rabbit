@@ -10,16 +10,21 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D playerRigidbody2D;
 
+    private Animator playerAnimator;
 
     void Start()
     {
         playerRigidbody2D = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponentInChildren<Animator>();
+
 
     }
 
 
     void Update () {
-       
+
+        playerAnimator.SetFloat("VelocityX", playerRigidbody2D.velocity.x);
+        playerAnimator.SetFloat("VelocityY", playerRigidbody2D.velocity.y);
 
         if (Input.GetButton("Right"))
         {

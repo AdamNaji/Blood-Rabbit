@@ -6,6 +6,8 @@ TagManager:
   tags:
   - SpawnPoint
   - Room
+  - WallDoor
+  - Node
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Nodes
   - 
   - 
   - 
