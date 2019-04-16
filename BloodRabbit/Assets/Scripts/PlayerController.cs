@@ -1,51 +1,42 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-  
+    public static PlayerController Instance;
+
     [SerializeField] private float moveForce = 1.0f;
 
     private Rigidbody2D playerRigidbody2D;
 
     private Animator playerAnimator;
 
+    private float moveHorizontal;
+    private float moveVertical;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
     void Start()
     {
         playerRigidbody2D = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponentInChildren<Animator>();
-
-
     }
 
 
-    void Update () {
+    private void Update()
+    {
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
+        moveVertical = Input.GetAxisRaw("Vertical");
 
         playerAnimator.SetFloat("VelocityX", playerRigidbody2D.velocity.x);
         playerAnimator.SetFloat("VelocityY", playerRigidbody2D.velocity.y);
 
-        if (Input.GetButton("Right"))
-        {
-            playerRigidbody2D.AddForce(Vector3.right * moveForce * Time.deltaTime);
-
-        }
-         if (Input.GetButton("Left") )
-        {
-            playerRigidbody2D.AddForce(Vector3.left * moveForce * Time.deltaTime);
-        }
-       if (Input.GetButton("Up"))
-        {
-            playerRigidbody2D.AddForce(Vector3.up * moveForce * Time.deltaTime);
-
-        }
-         if (Input.GetButton("Down"))
-        {
-            playerRigidbody2D.AddForce(Vector3.down * moveForce * Time.deltaTime);
-        }
-
+        var movement = new Vector2(moveHorizontal, moveVertical);
+        playerRigidbody2D.AddForce(movement * moveForce * Time.deltaTime);
     }
 
-   
+
 }
+

@@ -1,108 +1,61 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChaserEnemyController : MonoBehaviour
 {
-    public float speed;
-    public float distance;
-    public Transform playerPosition ;  
-    GameObject[] nodes ;
-    GameObject[] nodesVisited;
-    int a ;
-    float[] nodesDistance;
-    private int positionBegin;
+    private Rigidbody2D rigidbody2;
+
     private RoomScript roomScript;
-    private Collider2D[] nodeInArea;
 
-    void Update()
-    {   
-        Vector2 direction = playerPosition.position - transform.position;
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, direction, distance);
-        if (hitInfo.collider.tag == "Player")
-        {
-            Debug.DrawLine(transform.position, hitInfo.point , Color.red);
-            GetComponent<Rigidbody2D>().velocity = (playerPosition.position - transform.position).normalized * speed;
-        }
-        else
-        {
-            Debug.DrawLine(transform.position, transform.position +transform.right*distance, Color.cyan);
+    [SerializeField] private float minimumDistanceToNode;
 
-            Findpath();
-        }
-    }
+    [SerializeField] private LayerMask wallLayer;
+
+    [SerializeField] private float speed;
+
+    private NodeScript targetNode;
+    private NodeScript currentNode;
 
     void Start()
     {
-        
-         nodeInArea= Physics2D.OverlapCircleAll(transform.position, 50, 8);
-    
-         roomScript = GetComponentInParent<RoomScript>();
-         
-         positionBegin = -1;
-         nodes = GameObject.FindGameObjectsWithTag("Node");
-         nodesVisited = new GameObject[nodes.Length];
-         a = 0;
-         nodesDistance = new float[nodes.Length];
-         NewPath();
+        rigidbody2 = GetComponent<Rigidbody2D>();
 
+        roomScript = GetComponentInParent<RoomScript>();
+
+        targetNode = roomScript.GetNode(PlayerController.Instance.transform.position);
+        currentNode = roomScript.GetNode(transform.position);
     }
 
-    void NewPath()
+    private void Update()
     {
-        for (int i = 0; i < nodesDistance.Length; i++)
-        {
-            nodesDistance[i] = -1;
-        }
-        for (int i = 0; i < nodes.Length; i++)
-        {
-            if (nodes[i] != null)
-            {
-                float distancePlayerToBegin = Vector2.Distance(transform.position, nodes[i].transform.position);
-                nodesDistance[i] = distancePlayerToBegin;
-            }
-        }
+      
+        if (Physics2D.Linecast(PlayerController.Instance.transform.position, transform.position, wallLayer)) FindPath();
 
-        float minDistance = float.MaxValue;
-        positionBegin = -1;
-        for (int i = 0; i < nodesDistance.Length; i++)
-        {
-            if (nodesDistance[i] != -1)
-            {
-                if (minDistance > nodesDistance[i])
-                {
-                    minDistance = nodesDistance[i];
-                    positionBegin = i;
-                }
-            }
-        }
-    }
-    void Findpath()
-    {
-
-        if (positionBegin != -1)
-        {
-            if (Vector2.Distance(transform.position, nodes[positionBegin].transform.position) > 0.1f)
-            {
-                GetComponent<Rigidbody2D>().velocity = (nodes[positionBegin].transform.position - transform.position).normalized * speed;
-
-            }
-            else
-            {
-                nodesVisited[a] = nodes[positionBegin];
-                a++;
-                nodes[positionBegin] = null;
-                NewPath();          
-            }
-        }
         else
         {
-            nodes = GameObject.FindGameObjectsWithTag("Node");           
-            a = 0;
-            nodesDistance = new float[nodes.Length];
-            NewPath();
+            transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(PlayerController.Instance.transform.position.y - transform.position.y, PlayerController.Instance.transform.position.x - transform.position.x) * Mathf.Rad2Deg+90 , Vector3.forward);
+            rigidbody2.velocity = (PlayerController.Instance.transform.position - transform.position).normalized * speed;
         }
-        
     }
-    
+
+    void FindPath()
+    {
+        targetNode = roomScript.GetNode(PlayerController.Instance.transform.position);
+        transform.rotation=Quaternion.AngleAxis(Mathf.Atan2(currentNode.transform.position.y-transform.position.y, currentNode.transform.position.x - transform.position.x)*Mathf.Rad2Deg+90,Vector3.forward);
+        rigidbody2.velocity = (currentNode.transform.position - transform.position).normalized * speed;
+
+        if (Vector2.Distance(currentNode.transform.position, transform.position) > minimumDistanceToNode) return;
+
+        NodeScript returnNode = null;
+        var maxDistance = float.MaxValue;
+
+        foreach (var neighbour in currentNode.NeighborsList)
+        {
+            if (Vector2.Distance(targetNode.transform.position, neighbour.transform.position) > maxDistance) continue;
+
+            maxDistance = Vector2.Distance(targetNode.transform.position, neighbour.transform.position);
+            returnNode = neighbour;
+        }
+
+        currentNode = returnNode;
+    }
 }

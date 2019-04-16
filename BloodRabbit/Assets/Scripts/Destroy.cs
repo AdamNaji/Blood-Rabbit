@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Destroy : MonoBehaviour
 {
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
-        
-            Destroy(other.gameObject);
-        
+        if (other.CompareTag("WallDoor"))
+        { Debug.Log(2); Destroy(other.gameObject);}
+       
     }
 }

@@ -8,6 +8,10 @@ TagManager:
   - Room
   - WallDoor
   - Node
+  - Transition
+  - Enemies
+  - Undefined
+  - Shuriken
   layers:
   - Default
   - TransparentFX
@@ -18,13 +22,13 @@ TagManager:
   - 
   - 
   - Nodes
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Walls
+  - Destroy
+  - Player
+  - Enemies
+  - Shot
+  - Room
+  - Transition
   - 
   - 
   - 

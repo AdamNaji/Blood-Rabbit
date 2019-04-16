@@ -10,4 +10,19 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] RoomDroite;
 
     public GameObject closedRoom;
+
+    public List<GameObject> rooms;
+    public float waitTime;
+    private bool spawnedLastRoom;
+    public GameObject LastRoom;
+
+    void SpawnLastRoom()
+    {
+        Instantiate(LastRoom, rooms[rooms.Count - 1].transform.position,Quaternion.identity);
+    }
+
+    void Start()
+    {
+        Invoke("SpawnLastRoom",waitTime);
+    }
 }
