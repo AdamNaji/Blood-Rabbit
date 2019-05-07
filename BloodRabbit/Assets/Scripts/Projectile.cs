@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
     {
         
         if (other.CompareTag("Enemies")&& !isEnemy)
-        {   Debug.Log(8);
+        {   
             Destroy(other.gameObject);
         }
     }

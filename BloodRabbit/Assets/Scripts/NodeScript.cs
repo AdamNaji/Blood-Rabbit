@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class NodeScript : MonoBehaviour
 {
-    public List<NodeScript> NeighborsList;
-
+    [SerializeField]public List<NodeScript> NeighborsList;
+    public bool hasBeenVisited = false;
+    public bool isPath = false;
+    public NodeScript cameFrom = null;
+    public float curentcost = 0;
     private void OnDrawGizmos()
     {
         foreach (var neighbour in NeighborsList)

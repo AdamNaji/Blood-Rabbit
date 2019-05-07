@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+//using UnityEditor;
 using UnityEngine;
 
 public class RoomScript : MonoBehaviour
@@ -8,8 +9,8 @@ public class RoomScript : MonoBehaviour
 
     private void Start()
     {
-        NodesInRoom.Add(GetNode(PlayerController.Instance.transform.position));
         NodesInRoom = GetComponentsInChildren<NodeScript>().ToList();
+
 
         foreach (var node in NodesInRoom)
         {
@@ -19,6 +20,7 @@ public class RoomScript : MonoBehaviour
                 if (Physics2D.Linecast(node.transform.position, possibleNeighbour.transform.position)) continue;
 
                 node.NeighborsList.Add(possibleNeighbour);
+                
             }
         }
     }
@@ -30,8 +32,8 @@ public class RoomScript : MonoBehaviour
 
         foreach (var node in NodesInRoom)
         {
-            if (Vector2.Distance(target, node.transform.position) > maxValue) continue;
 
+            if (Vector2.Distance(target, node.transform.position) > maxValue) continue;
             maxValue = Vector2.Distance(target, node.transform.position);
             returnNode = node;
         }

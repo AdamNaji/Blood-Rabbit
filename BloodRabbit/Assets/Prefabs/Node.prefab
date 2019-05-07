@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 8
   m_Name: Node
   m_TagString: Node
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a672780f986fe440a316607a7b6d393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighborsList: []
+  NeighborsList: []
+  hasBeenVisited: 0
+  isPath: 0
+  cameFrom: {fileID: 0}
+  curentcost: 0

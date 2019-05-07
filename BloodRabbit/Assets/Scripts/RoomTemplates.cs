@@ -21,6 +21,11 @@ public class RoomTemplates : MonoBehaviour
         Instantiate(LastRoom, rooms[rooms.Count - 1].transform.position,Quaternion.identity);
     }
 
+    void Awake()
+    {
+        //Random.InitState(6);
+        
+    }
     void Start()
     {
         Invoke("SpawnLastRoom",waitTime);
